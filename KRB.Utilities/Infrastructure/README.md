@@ -1,4 +1,8 @@
-# About KRB.Utilities Class
+# About KRB.Utilities Classes
+In this section, there are a number of classes and application middleware, they are mentioned below
+
+* (ExcelExport)[#excelexport]
+- (ForceWwwMiddleware)[#the-forcewwwmiddleware-class]
 
 ## ExcelExport
 This class, named ExcelExport, is responsible for converting data stored in a list to an Excel file. Specifically, this class is useful in scenarios within ***ASP.NET MVC***  where there's a need to export data from a model to an Excel file format.
