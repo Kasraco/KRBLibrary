@@ -1,5 +1,6 @@
-**ExcelExport**
+# About KRB.Utilities Class
 
+## ExcelExport
 This class, named ExcelExport, is responsible for converting data stored in a list to an Excel file. Specifically, this class is useful in scenarios within ***ASP.NET MVC***  where there's a need to export data from a model to an Excel file format.
 
 Using this class, we can take a list of any model type as input and export them to an Excel file format. The class provides the ExcelExport method, which takes the data list and the file path for the Excel file as input, and generates the desired Excel file using the data available in the list.
@@ -58,7 +59,7 @@ namespace YourNamespace
     }
 }
 ```
-**The ForceWwwMiddleware Class**
+## The ForceWwwMiddleware Class
 The **ForceWwwMiddleware** class looks correct for redirecting requests to include the **"www"** prefix in ASP.NET Core. However, you may need to include some error handling and additional checks for special cases, depending on your application's requirements.
 This middleware now includes the scheme, path, and query parameters in the redirect URL to preserve the original request details. It also checks for the scheme (HTTP or HTTPS) to ensure that the redirect works correctly for both types of requests. Additionally, it maintains the query string parameters if present in the original request.
 
@@ -72,12 +73,3 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 With these adjustments, the middleware should effectively redirect requests to include the **"www"** prefix when necessary.
-
-
-
-
-
-
-
-
-
