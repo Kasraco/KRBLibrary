@@ -8,14 +8,8 @@ namespace KRB.Utilities.Infrastructure;
 
 public class ForceWwwMiddleware
 {
-    private readonly RequestDelegate _next;
 
-    public ForceWwwMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         if (context == null)
         {
@@ -24,7 +18,7 @@ public class ForceWwwMiddleware
 
         if (context.Request.Host.Host.StartsWith("www"))
         {
-            await _next(context);
+            await next(context);
             return;
         }
 
@@ -40,7 +34,10 @@ public class ForceWwwMiddleware
             return;
         }
 
-        await _next(context);
+        await next(context);
     }
+
+
+
 }
 
