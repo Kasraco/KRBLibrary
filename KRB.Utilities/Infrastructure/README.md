@@ -4,7 +4,7 @@ In this section, there are a number of classes and application middleware, they 
 * [ExcelExport](#excelexport)
 - [ForceWwwMiddleware](#the-forcewwwmiddleware-class)
 
-## ExcelExport
+## ExcelExport Class
 This class, named ExcelExport, is responsible for converting data stored in a list to an Excel file. Specifically, this class is useful in scenarios within ***ASP.NET MVC***  where there's a need to export data from a model to an Excel file format.
 
 Using this class, we can take a list of any model type as input and export them to an Excel file format. The class provides the ExcelExport method, which takes the data list and the file path for the Excel file as input, and generates the desired Excel file using the data available in the list.
@@ -77,3 +77,73 @@ public void Configure(IApplicationBuilder app)
 }
 ```
 With these adjustments, the middleware should effectively redirect requests to include the **"www"** prefix when necessary.
+
+
+## ViewConvertor Class
+
+**ViewConvertor:** This class is responsible for converting a Razor page into a string. This class serves as a utility tool that can convert a Razor view into a string using its own functions.
+
+A practical example for using ViewConvertor:
+This code snippet demonstrates an email template in Razor that is used to send a password reset link to users. which is saved with the name **_ResetPasswordConfirmation.cshtml**
+```C#
+@model KRB.Web.Model.EmailModel.ResetPasswordModel
+
+<div style="direction: rtl; -ms-word-wrap: break-word; word-wrap: break-word;">
+    <p>Dear @Model.UserName,</p>
+    <p>&nbsp;Greetings,</p>
+    <p>It appears that you have requested to reset your password. If this request is yours, please click on the link below. Otherwise, you can disregard this message.</p>
+    <p>@Model.ResetLink</p>
+    <div style="font-size: 13px; color: #808080;">
+        <p>Thank you,</p>
+        <p>@Model.SiteTitle</p>
+        <p>@Model.SiteDescription</p>
+        <p><span style="direction: ltr !important; unicode-bidi: embed;">@DateTime.Now</span></p>
+    </div>
+</div>
+```
+
+And This method responsible for sending a confirmation email after a password reset request.
+```C#
+private readonly IHttpContextAccessor _httpContextAccessor;
+private readonly EmailServiceConfiguration _emailServiceConfiguration;
+
+public YourController(IHttpContextAccessor httpContextAccessor, EmailServiceConfiguration emailServiceConfiguration)
+{
+    _httpContextAccessor = httpContextAccessor;
+    _emailServiceConfiguration = emailServiceConfiguration;
+}
+private SendingMailResult SendResetPasswordConfirmation(string userName, string email, string guid,
+            string subject,string BlogDescription, string BlogName)
+{
+    string mailServerUrl = "mail.google.com";
+    string adminEmail = "TestUserName";
+    string mailServerPass = "";
+    string mailServerLogin = "";
+    int mailServerPort = 25;
+    var model = new ResetPasswordModel
+    {
+        UserName = userName,
+        ResetLink = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}{Url.Action("ResetPassword","ForgottenPassword", new { key = guid })}",
+        SiteDescription = blogDescription,
+        SiteTitle = blogName
+    };
+    return EmailService.Send(new MailDocument
+    {
+        Body = new ViewConvertor().RenderRazorViewToString("_ResetPasswordConfirmation", ControllerContext, model),
+        Subject = $"{_emailServiceConfiguration.SiteUrl} - {blogName} - {subject}",
+        ToEmail = email,
+    }, new MailConfiguration
+    {
+        EnableSsl = true,
+        SmtpServer = mailServerUrl,
+        From = adminEmail,
+        Password = mailServerPass,
+        UserName = mailServerLogin,
+        SmtpPort = mailServerPort
+    });
+}
+```
+
+These two pieces of code are combined to send emails containing reset password to users. It's noteworthy that ViewConvertor is used for converting Razor views into strings, while EmailService is utilized for sending emails.
+
+
