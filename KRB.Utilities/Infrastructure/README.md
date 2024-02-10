@@ -3,6 +3,7 @@ In this section, there are a number of classes and application middleware, they 
 
 * [ExcelExport](#excelexport)
 - [ForceWwwMiddleware](#the-forcewwwmiddleware-class)
+/ [View Convertor](#viewconvertor-class)
 
 ## ExcelExport Class
 This class, named ExcelExport, is responsible for converting data stored in a list to an Excel file. Specifically, this class is useful in scenarios within ***ASP.NET MVC***  where there's a need to export data from a model to an Excel file format.
